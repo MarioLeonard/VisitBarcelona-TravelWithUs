@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bcn-red: #C8102E;
+  --bcn-blue: #003DA5;
+  --bcn-dark-blue: #001a4d;
+  --bcn-accent: #FFCD00;
+
+  /* Global Background Variables */
+  --bg-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="300" viewBox="0 0 1000 300" preserveAspectRatio="none"><path d="M0,300 L0,200 L50,200 L50,150 L100,150 L100,100 L120,100 L120,80 L180,80 L180,120 L220,120 L220,50 L250,50 L250,130 L300,130 L300,170 L350,170 L350,90 L380,90 L380,180 L450,180 L450,140 L500,140 L500,100 L550,100 L550,160 L600,160 L600,200 L650,200 L650,120 L700,120 L700,80 L750,80 L750,150 L800,150 L800,100 L850,100 L850,180 L900,180 L900,130 L950,130 L950,200 L1000,200 L1000,300 Z" fill="rgba(255,255,255,0.1)"/></svg>'), linear-gradient(135deg, var(--bcn-blue) 0%, var(--bcn-dark-blue) 100%);
+  --bg-position: bottom center;
+  --bg-repeat: no-repeat;
+  --bg-size: 100% 300px, 100% 100%;
+
+  /* Override NgZorro primary colors */
+  --ant-primary-color: #C8102E;
+  --ant-primary-color-hover: #d9363e;
+  --ant-primary-color-active: #a60017;
+  --ant-primary-color-outline: rgba(200, 16, 46, 0.2);
+  --ant-primary-1: #fff1f0;
+  --ant-primary-2: #ffccc7;
+  --ant-primary-3: #ffa39e;
+  --ant-primary-4: #ff7875;
+  --ant-primary-5: #ff4d4f;
+  --ant-primary-6: #C8102E;
+  --ant-primary-7: #a60017;
+}
+
+body, html {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Base heading styles for Poppins */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Ensure readable components on dark background */
+.ant-card,
+.ant-table-wrapper,
+.ant-modal-content,
+.ant-select-selector {
+  background-color: #ffffff !important;
+}
+
+/* Make table headers explicitly light to avoid transparent bleed */
+.ant-table-thead > tr > th {
+  background-color: #fafafa !important;
+}
