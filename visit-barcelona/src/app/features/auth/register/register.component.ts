@@ -284,6 +284,28 @@ function passwordMatchValidator(group: FormGroup): ValidationErrors | null {
     nz-alert {
       margin-bottom: 1rem;
     }
+
+    /* ── Dark mode ── */
+    :host-context(:root.dark-mode) .register-card {
+      background: #12122a !important;
+      border-color: #2e2e55 !important;
+    }
+
+    :host-context(:root.dark-mode) h1 {
+      color: #ffffff;
+    }
+
+    :host-context(:root.dark-mode) p {
+      color: #c0c8e8;
+    }
+
+    :host-context(:root.dark-mode) .login-link a {
+      color: #69b1ff;
+    }
+
+    :host-context(:root.dark-mode) ::ng-deep .ant-form-item-label > label {
+      color: #c0c8e8 !important;
+    }
   `]
 })
 export class RegisterComponent implements OnInit {
