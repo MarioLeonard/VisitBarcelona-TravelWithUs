@@ -52,17 +52,9 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
           <button nz-button nzType="primary" nzSize="large" routerLink="/attractions">
             Manage Attractions
           </button>
-          <button nz-button class="weather-toggle-btn" [class.active]="weatherPanelVisible()" (click)="toggleWeatherPanel()" nzShape="circle">
-            <span nz-icon nzType="cloud" nzTheme="outline"></span>
-          </button>
           <button nz-button nzDanger (click)="onLogout()">
             Logout
           </button>
-        </div>
-
-        <!-- Floating Weather Panel -->
-        <div class="weather-floating-panel" [class.visible]="weatherPanelVisible()">
-          <app-weather-widget></app-weather-widget>
         </div>
       </div>
 
@@ -136,10 +128,20 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
         <div class="map-section">
           <div class="map-section-header">
             <h2 class="section-title">Barcelona Map</h2>
-            <button nz-button nzType="primary" (click)="openFullMap()">
-              <span nz-icon nzType="environment"></span>
-              Open Full Map
-            </button>
+            <div class="map-header-actions">
+              <button nz-button class="weather-toggle-btn" [class.active]="weatherPanelVisible()" (click)="toggleWeatherPanel()" nzShape="circle">
+                <span nz-icon nzType="cloud" nzTheme="outline"></span>
+              </button>
+              <button nz-button nzType="primary" (click)="openFullMap()">
+                <span nz-icon nzType="environment"></span>
+                Open Full Map
+              </button>
+
+              <!-- Floating Weather Panel -->
+              <div class="weather-floating-panel" [class.visible]="weatherPanelVisible()">
+                <app-weather-widget></app-weather-widget>
+              </div>
+            </div>
           </div>
           <div class="mini-map-wrapper">
             <google-map
@@ -198,7 +200,6 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
       margin-bottom: 2rem;
       border-bottom: 2px solid rgba(255, 255, 255, 0.2);
       padding-bottom: 1rem;
-      position: relative;
     }
 
     .dashboard-header h1 {
@@ -404,6 +405,13 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .map-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
     }
 
     .mini-map-wrapper {
