@@ -261,6 +261,11 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
       margin-bottom: 0.5rem;
       color: #666;
       font-weight: normal;
+      transition: color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .progress-card h4 {
+      color: #a0a8d0;
     }
 
     .main-content-row {

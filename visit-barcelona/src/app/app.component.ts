@@ -66,6 +66,17 @@ import { ThemeToggleComponent } from '@app/shared/components/theme-toggle/theme-
       display: flex;
       justify-content: flex-end;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .app-theme-bar {
+      background-color: #0a0a14;
+      border-bottom-color: rgba(255, 255, 255, 0.06);
+    }
+
+    :host-context(:root.dark-mode) .app-footer {
+      background-color: #050508 !important;
+      color: rgba(255, 255, 255, 0.4);
     }
 
     .app-layout {

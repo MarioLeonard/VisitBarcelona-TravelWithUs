@@ -97,6 +97,13 @@ import { WeatherService } from '@app/core/services/weather.service';
     .weather-card {
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .weather-card {
+      background: linear-gradient(135deg, #12122a 0%, #1a1a38 100%) !important;
+      border-color: #2e2e55 !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
     }
 
     ::ng-deep .weather-card .ant-card-body {
@@ -149,12 +156,22 @@ import { WeatherService } from '@app/core/services/weather.service';
       font-weight: 700;
       line-height: 1;
       color: #262626;
+      transition: color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .temperature {
+      color: #e8eaf6;
     }
 
     .condition {
       font-size: 0.9rem;
       font-weight: 500;
       color: #595959;
+      transition: color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .condition {
+      color: #a0a8d0;
     }
 
     .description {
@@ -162,6 +179,11 @@ import { WeatherService } from '@app/core/services/weather.service';
       color: #999;
       margin: 0.25rem 0 0 0;
       font-style: normal;
+      transition: color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .description {
+      color: #606488;
     }
 
     .weather-icon-wrapper {
@@ -181,6 +203,11 @@ import { WeatherService } from '@app/core/services/weather.service';
       gap: 0.75rem;
       padding: 0.75rem 0 0 0;
       border-top: 1px solid #f0f0f0;
+      transition: border-color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .weather-details {
+      border-top-color: #2a2a4a;
     }
 
     .detail-item {
@@ -211,12 +238,22 @@ import { WeatherService } from '@app/core/services/weather.service';
       font-size: 0.7rem;
       color: #999;
       font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .detail-label {
+      color: #606488;
     }
 
     .detail-value {
       font-size: 0.9rem;
       font-weight: 600;
       color: #262626;
+      transition: color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .detail-value {
+      color: #c8d0e8;
     }
 
     .location {
@@ -230,6 +267,12 @@ import { WeatherService } from '@app/core/services/weather.service';
       font-weight: 500;
       border-top: 1px solid #f0f0f0;
       margin-top: 0.75rem;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .location {
+      color: #a0a8d0;
+      border-top-color: #2a2a4a;
     }
 
     @media (max-width: 768px) {

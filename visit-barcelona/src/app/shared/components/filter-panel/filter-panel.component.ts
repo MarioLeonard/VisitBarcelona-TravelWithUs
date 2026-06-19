@@ -171,12 +171,36 @@ export interface FilterState {
       border-radius: 6px;
       padding: 1.5rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .filter-panel-content {
+      background: #1a1a2e;
+      border-color: #2e2e4d;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    :host-context(:root.dark-mode) .filter-toggle {
+      background: #1a1a2e !important;
+      border-color: #3a3a5c !important;
+      color: #c8d0e8 !important;
+    }
+
+    :host-context(:root.dark-mode) .filter-toggle:hover {
+      background: #252540 !important;
+      border-color: #5a5a8a !important;
+      color: #ffffff !important;
     }
 
     .divider {
       height: 1px;
       background-color: #e8e8e8;
       margin: 1rem 0;
+      transition: background-color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .divider {
+      background-color: #2e2e4d;
     }
 
     .filter-section {
@@ -196,6 +220,11 @@ export interface FilterState {
       font-weight: 600;
       color: #262626;
       font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .filter-label {
+      color: #c8d0e8;
     }
 
     .rating-value {
