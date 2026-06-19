@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy, AfterViewInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -52,9 +52,18 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
           <button nz-button nzType="primary" nzSize="large" routerLink="/attractions">
             Manage Attractions
           </button>
+          <button nz-button class="weather-toggle-btn" [class.active]="weatherPanelVisible()" (click)="toggleWeatherPanel()">
+            <span nz-icon nzType="cloud" nzTheme="outline"></span>
+            Weather
+          </button>
           <button nz-button nzDanger (click)="onLogout()">
             Logout
           </button>
+        </div>
+
+        <!-- Floating Weather Panel -->
+        <div class="weather-floating-panel" [class.visible]="weatherPanelVisible()">
+          <app-weather-widget></app-weather-widget>
         </div>
       </div>
 
@@ -162,10 +171,6 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
 
       </div>
 
-      <!-- Weather Widget Section -->
-      <div class="weather-section">
-        <app-weather-widget></app-weather-widget>
-      </div>
     </div>
   `,
   styles: [`
@@ -194,6 +199,7 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
       margin-bottom: 2rem;
       border-bottom: 2px solid rgba(255, 255, 255, 0.2);
       padding-bottom: 1rem;
+      position: relative;
     }
 
     .dashboard-header h1 {
@@ -432,16 +438,44 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
     .legend-dot.visited { background: #52c41a; }
     .legend-dot.not-visited { background: #ff4d4f; }
 
-    .weather-section {
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    .weather-toggle-btn {
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      border-color: rgba(255, 255, 255, 0.4) !important;
+      color: #ffffff !important;
+      height: 40px !important;
+      padding: 0 16px !important;
+      font-size: 15px !important;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
 
-    .weather-section app-weather-widget {
-      display: block;
-      max-width: 400px;
-      margin: 0 auto;
+    .weather-toggle-btn:hover,
+    .weather-toggle-btn.active {
+      background-color: rgba(255, 255, 255, 0.3) !important;
+      border-color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .weather-floating-panel {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 1000;
+      width: 320px;
+      margin-top: 12px;
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
+    }
+
+    .weather-floating-panel.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     .stats-row {
@@ -476,6 +510,19 @@ export class DashboardComponent implements AfterViewInit {
   private router = inject(Router);
 
   currentUser = this.authService.currentUser;
+  weatherPanelVisible = signal<boolean>(false);
+
+  toggleWeatherPanel(): void {
+    this.weatherPanelVisible.update(v => !v);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.weather-floating-panel') && !target.closest('.weather-toggle-btn')) {
+      this.weatherPanelVisible.set(false);
+    }
+  }
 
   totalAttractions = computed(() => this.attractionsService.attractions().length);
   visitedAttractions = this.attractionsService.visitedCount;
