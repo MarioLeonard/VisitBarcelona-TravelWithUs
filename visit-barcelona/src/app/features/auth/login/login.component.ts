@@ -212,6 +212,45 @@ import { AuthService } from '@app/core/services/auth.service';
     .demo-credentials strong {
       color: #1890ff;
     }
+
+    /* ── Dark mode ── */
+    :host-context(:root.dark-mode) .login-card {
+      background: #12122a !important;
+      border-color: #2e2e55 !important;
+    }
+
+    :host-context(:root.dark-mode) h1 {
+      color: #ffffff;
+    }
+
+    :host-context(:root.dark-mode) p {
+      color: #c0c8e8;
+    }
+
+    :host-context(:root.dark-mode) .register-link a {
+      color: #69b1ff;
+    }
+
+    :host-context(:root.dark-mode) .demo-credentials {
+      background: #1e1e3a;
+      border: 1px solid #2e2e55;
+    }
+
+    :host-context(:root.dark-mode) .demo-credentials p {
+      color: #c0c8e8;
+    }
+
+    :host-context(:root.dark-mode) .demo-credentials strong {
+      color: #69b1ff;
+    }
+
+    :host-context(:root.dark-mode) ::ng-deep .ant-form-item-label > label {
+      color: #c0c8e8 !important;
+    }
+
+    :host-context(:root.dark-mode) ::ng-deep .ant-checkbox-wrapper {
+      color: #c0c8e8;
+    }
   `]
 })
 export class LoginComponent implements OnInit {

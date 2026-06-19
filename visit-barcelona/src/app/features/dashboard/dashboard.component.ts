@@ -52,9 +52,8 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
           <button nz-button nzType="primary" nzSize="large" routerLink="/attractions">
             Manage Attractions
           </button>
-          <button nz-button class="weather-toggle-btn" [class.active]="weatherPanelVisible()" (click)="toggleWeatherPanel()">
+          <button nz-button class="weather-toggle-btn" [class.active]="weatherPanelVisible()" (click)="toggleWeatherPanel()" nzShape="circle">
             <span nz-icon nzType="cloud" nzTheme="outline"></span>
-            Weather
           </button>
           <button nz-button nzDanger (click)="onLogout()">
             Logout
@@ -442,13 +441,12 @@ import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/we
       background-color: rgba(255, 255, 255, 0.15) !important;
       border-color: rgba(255, 255, 255, 0.4) !important;
       color: #ffffff !important;
+      width: 40px !important;
       height: 40px !important;
-      padding: 0 16px !important;
-      font-size: 15px !important;
-      font-weight: 600;
+      font-size: 18px !important;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
       transition: background-color 0.2s ease, border-color 0.2s ease;
     }
 
