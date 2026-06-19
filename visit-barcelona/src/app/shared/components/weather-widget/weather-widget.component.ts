@@ -49,9 +49,6 @@ import { WeatherService } from '@app/core/services/weather.service';
               <div class="condition">
                 {{ weatherService.weatherInfo()!.condition }}
               </div>
-              <p class="description">
-                {{ weatherService.weatherInfo()!.description }}
-              </p>
             </div>
 
             <!-- Weather Icon -->
@@ -62,13 +59,14 @@ import { WeatherService } from '@app/core/services/weather.service';
                 nzTheme="outline"
                 class="weather-icon"
               ></span>
+              <p class="description">
+                {{ weatherService.weatherInfo()!.description }}
+              </p>
             </div>
           </div>
 
-          <!-- Details Section -->
           <div class="weather-details">
             <div class="detail-item">
-              <span nz-icon nzType="drop" class="detail-icon humidity"></span>
               <div class="detail-text">
                 <span class="detail-label">Humidity</span>
                 <span class="detail-value">{{ weatherService.weatherInfo()!.humidity }}%</span>
@@ -76,7 +74,6 @@ import { WeatherService } from '@app/core/services/weather.service';
             </div>
 
             <div class="detail-item">
-              <span nz-icon nzType="wind" class="detail-icon wind"></span>
               <div class="detail-text">
                 <span class="detail-label">Wind</span>
                 <span class="detail-value">{{ weatherService.weatherInfo()!.windSpeed }} km/h</span>
@@ -188,8 +185,10 @@ import { WeatherService } from '@app/core/services/weather.service';
 
     .weather-icon-wrapper {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
     }
 
     .weather-icon {
@@ -213,6 +212,7 @@ import { WeatherService } from '@app/core/services/weather.service';
     .detail-item {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.75rem;
     }
 
@@ -231,6 +231,8 @@ import { WeatherService } from '@app/core/services/weather.service';
     .detail-text {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      text-align: center;
       gap: 0.25rem;
     }
 
