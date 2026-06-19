@@ -15,6 +15,7 @@ import { GoogleMap, MapMarker } from '@angular/google-maps';
 import { AuthService } from '@app/core/services/auth.service';
 import { AttractionsService } from '@app/core/services/attractions.service';
 import { Attraction } from '@app/shared/models';
+import { WeatherWidgetComponent } from '@app/shared/components/weather-widget/weather-widget.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,7 +34,8 @@ import { Attraction } from '@app/shared/models';
     NzTagModule,
     NzIconModule,
     GoogleMap,
-    MapMarker
+    MapMarker,
+    WeatherWidgetComponent
   ],
   template: `
     <div class="dashboard-container">
@@ -158,6 +160,11 @@ import { Attraction } from '@app/shared/models';
           </div>
         </div>
 
+      </div>
+
+      <!-- Weather Widget Section -->
+      <div class="weather-section">
+        <app-weather-widget></app-weather-widget>
       </div>
     </div>
   `,
@@ -419,6 +426,18 @@ import { Attraction } from '@app/shared/models';
 
     .legend-dot.visited { background: #52c41a; }
     .legend-dot.not-visited { background: #ff4d4f; }
+
+    .weather-section {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .weather-section app-weather-widget {
+      display: block;
+      max-width: 400px;
+      margin: 0 auto;
+    }
 
     .stats-row {
       display: grid;

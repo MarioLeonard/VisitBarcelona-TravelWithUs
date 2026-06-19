@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, signal, inject, ChangeDetectionStrategy, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -22,6 +22,7 @@ import { AttractionsService } from '@app/core/services/attractions.service';
 import { Attraction } from '@app/shared/models';
 import { AttractionFormComponent } from './attraction-form.component';
 import { BackButtonComponent } from '@app/shared/components/back-button/back-button.component';
+import { FilterPanelComponent, FilterState } from '@app/shared/components/filter-panel/filter-panel.component';
 
 @Component({
   selector: 'app-attractions',
@@ -44,7 +45,8 @@ import { BackButtonComponent } from '@app/shared/components/back-button/back-but
     NzGridModule,
     NzTooltipModule,
     AttractionFormComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    FilterPanelComponent
   ],
   template: `
     <div class="attractions-container">
@@ -70,6 +72,9 @@ import { BackButtonComponent } from '@app/shared/components/back-button/back-but
           </button>
         </div>
       </div>
+
+      <!-- Filter Panel -->
+      <app-filter-panel (filterChange)="onFilterChange($event)"></app-filter-panel>
 
       <!-- Search Bar -->
       <div class="search-bar">
@@ -311,11 +316,50 @@ import { BackButtonComponent } from '@app/shared/components/back-button/back-but
   `]
 })
 export class AttractionsComponent implements OnInit {
-  filteredAttractions = signal<Attraction[]>([]);
   searchQuery = '';
   isAddModalVisible = false;
   isEditModalVisible = false;
   editingAttraction = signal<Attraction | undefined>(undefined);
+
+  // Filter signals
+  private selectedDistricts = signal<string[]>([]);
+  private selectedCategories = signal<string[]>([]);
+  private ratingRange = signal<[number, number]>([0, 5]);
+
+  // Computed filtered attractions combining search + filters
+  filteredAttractions = computed(() => {
+    const query = this.searchQuery.toLowerCase().trim();
+    const districts = this.selectedDistricts();
+    const categories = this.selectedCategories();
+    const [minRating, maxRating] = this.ratingRange();
+    
+    let results = this.attractionsService.getAll();
+
+    // Apply text search
+    if (query) {
+      results = results.filter(a =>
+        a.name.toLowerCase().includes(query) ||
+        a.category.toLowerCase().includes(query) ||
+        a.district.toLowerCase().includes(query) ||
+        a.description.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply district filter
+    if (districts.length > 0) {
+      results = results.filter(a => districts.includes(a.district));
+    }
+
+    // Apply category filter
+    if (categories.length > 0) {
+      results = results.filter(a => categories.includes(a.category));
+    }
+
+    // Apply rating filter
+    results = results.filter(a => a.rating >= minRating && a.rating <= maxRating);
+
+    return results;
+  });
 
   sortNameFn = (a: Attraction, b: Attraction) => a.name.localeCompare(b.name);
   sortCategoryFn = (a: Attraction, b: Attraction) => a.category.localeCompare(b.category);
@@ -333,13 +377,11 @@ export class AttractionsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.filteredAttractions.set(this.attractionsService.getAll());
-    
     // Setup search debounce
     this.searchSubject.pipe(
       debounceTime(300)
     ).subscribe(() => {
-      this.performSearch();
+      // Computed signal will automatically update filtered results
     });
   }
 
@@ -347,14 +389,10 @@ export class AttractionsComponent implements OnInit {
     this.searchSubject.next(this.searchQuery);
   }
 
-  private performSearch(): void {
-    if (!this.searchQuery.trim()) {
-      this.filteredAttractions.set(this.attractionsService.getAll());
-      return;
-    }
-
-    const results = this.attractionsService.search(this.searchQuery);
-    this.filteredAttractions.set(results);
+  onFilterChange(filterState: FilterState): void {
+    this.selectedDistricts.set(filterState.districts);
+    this.selectedCategories.set(filterState.categories);
+    this.ratingRange.set(filterState.ratingRange);
   }
 
   openAddModal(): void {
@@ -388,7 +426,6 @@ export class AttractionsComponent implements OnInit {
     this.attractionsService.add(data);
     this.message.success('Attraction added successfully!');
     this.closeAddModal();
-    this.performSearch();
   }
 
   openEditModal(attraction: Attraction): void {
@@ -411,13 +448,11 @@ export class AttractionsComponent implements OnInit {
       });
       this.message.success('Attraction updated successfully!');
       this.closeEditModal();
-      this.performSearch();
     }
   }
 
   onDeleteConfirm(id: string): void {
     this.attractionsService.delete(id);
     this.message.success('Attraction deleted successfully!');
-    this.performSearch();
   }
 }

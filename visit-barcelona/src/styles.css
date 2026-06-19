@@ -50,3 +50,186 @@ h1, h2, h3, h4, h5, h6 {
 .ant-table-thead > tr > th {
   background-color: #fafafa !important;
 }
+
+/* ============ DARK MODE ============ */
+
+:root.dark-mode {
+  /* Dark mode background */
+  --bg-image: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+  --bg-position: 0 0;
+  --bg-repeat: no-repeat;
+  --bg-size: 100% 100%;
+
+  /* Text colors */
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --bg-card: #2d2d44;
+  --bg-secondary: #1a1a2e;
+  --border-color: #404060;
+}
+
+:root.dark-mode body,
+:root.dark-mode html {
+  background-color: #0f0f1e;
+  color: var(--text-primary);
+}
+
+:root.dark-mode * {
+  color-scheme: dark;
+}
+
+/* Dark mode cards */
+:root.dark-mode .ant-card {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+:root.dark-mode .ant-card-head {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Dark mode tables */
+:root.dark-mode .ant-table {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+:root.dark-mode .ant-table-thead > tr > th {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+:root.dark-mode .ant-table-tbody > tr {
+  border-color: var(--border-color) !important;
+}
+
+:root.dark-mode .ant-table-tbody > tr > td {
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+:root.dark-mode .ant-table-tbody > tr:hover > td {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Dark mode inputs */
+:root.dark-mode .ant-input,
+:root.dark-mode .ant-input-number,
+:root.dark-mode .ant-select-selector,
+:root.dark-mode .ant-picker {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+:root.dark-mode .ant-input::placeholder,
+:root.dark-mode .ant-input-number::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+/* Dark mode buttons */
+:root.dark-mode .ant-btn-default {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+:root.dark-mode .ant-btn-default:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Dark mode modals */
+:root.dark-mode .ant-modal-content {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+:root.dark-mode .ant-modal-header {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border-color) !important;
+}
+
+:root.dark-mode .ant-modal-title {
+  color: var(--text-primary) !important;
+}
+
+/* Dark mode text */
+:root.dark-mode p {
+  color: var(--text-primary) !important;
+}
+
+:root.dark-mode h1,
+:root.dark-mode h2,
+:root.dark-mode h3,
+:root.dark-mode h4,
+:root.dark-mode h5,
+:root.dark-mode h6 {
+  color: var(--text-primary) !important;
+}
+
+/* Dark mode statistics */
+:root.dark-mode .ant-statistic-title {
+  color: var(--text-secondary) !important;
+}
+
+:root.dark-mode .ant-statistic-content {
+  color: var(--text-primary) !important;
+}
+
+/* Dark mode tags and badges */
+:root.dark-mode .ant-tag {
+  background-color: rgba(200, 16, 46, 0.2) !important;
+  color: #ff7875 !important;
+}
+
+/* Dark mode progress */
+:root.dark-mode .ant-progress-inner {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark mode dropdown/select */
+:root.dark-mode .ant-dropdown-menu {
+  background-color: var(--bg-card) !important;
+}
+
+:root.dark-mode .ant-dropdown-menu-item {
+  color: var(--text-primary) !important;
+}
+
+:root.dark-mode .ant-dropdown-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark mode scrollbar */
+:root.dark-mode ::-webkit-scrollbar {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+:root.dark-mode ::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+:root.dark-mode ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+}
+
+:root.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode borders */
+:root.dark-mode .ant-divider {
+  background-color: var(--border-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Dark mode icons */
+:root.dark-mode [nz-icon] {
+  color: var(--text-primary);
+}

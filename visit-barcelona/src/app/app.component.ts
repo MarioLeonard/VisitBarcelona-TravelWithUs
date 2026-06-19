@@ -7,6 +7,8 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { AuthService } from '@app/core/services/auth.service';
+import { ThemeService } from '@app/core/services/theme.service';
+import { ThemeToggleComponent } from '@app/shared/components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-root',
@@ -18,32 +20,57 @@ import { AuthService } from '@app/core/services/auth.service';
     NzMenuModule,
     NzAvatarModule,
     NzIconModule,
-    NzSpinModule
+    NzSpinModule,
+    ThemeToggleComponent
   ],
   template: `
-    @if (authService.isAuthenticated()) {
-      <nz-layout class="app-layout">
-        <nz-content class="app-content">
-          <div class="inner-content">
-            <nz-spin [nzSpinning]="isRouting()" nzSize="large" [nzDelay]="100">
-              <router-outlet></router-outlet>
-            </nz-spin>
-          </div>
-        </nz-content>
-        
-        <nz-footer class="app-footer">
-          Visit Barcelona - Developed with Angular by TravelWithUs Team
-        </nz-footer>
-      </nz-layout>
-    } @else {
-      <nz-spin [nzSpinning]="isRouting()" nzSize="large" [nzDelay]="100">
-        <router-outlet></router-outlet>
-      </nz-spin>
-    }
+    <div class="app-wrapper">
+      <!-- Global Theme Toggle -->
+      @if (authService.isAuthenticated()) {
+        <div class="app-theme-bar">
+          <app-theme-toggle></app-theme-toggle>
+        </div>
+      }
+      
+      @if (authService.isAuthenticated()) {
+        <nz-layout class="app-layout">
+          <nz-content class="app-content">
+            <div class="inner-content">
+              <nz-spin [nzSpinning]="isRouting()" nzSize="large" [nzDelay]="100">
+                <router-outlet></router-outlet>
+              </nz-spin>
+            </div>
+          </nz-content>
+          
+          <nz-footer class="app-footer">
+            Visit Barcelona - Developed with Angular by TravelWithUs Team
+          </nz-footer>
+        </nz-layout>
+      } @else {
+        <nz-spin [nzSpinning]="isRouting()" nzSize="large" [nzDelay]="100">
+          <router-outlet></router-outlet>
+        </nz-spin>
+      }
+    </div>
   `,
   styles: [`
-    .app-layout {
+    .app-wrapper {
+      display: flex;
+      flex-direction: column;
       min-height: 100vh;
+    }
+
+    .app-theme-bar {
+      background-color: var(--bcn-blue);
+      padding: 0.5rem 2rem;
+      display: flex;
+      justify-content: flex-end;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .app-layout {
+      flex: 1;
+      min-height: calc(100vh - 48px);
     }
 
     .app-content {
@@ -73,6 +100,7 @@ import { AuthService } from '@app/core/services/auth.service';
 })
 export class AppComponent {
   authService = inject(AuthService);
+  themeService = inject(ThemeService);
   router = inject(Router);
   
   isRouting = signal(false);
