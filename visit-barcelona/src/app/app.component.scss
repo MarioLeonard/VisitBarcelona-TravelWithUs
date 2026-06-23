@@ -1,0 +1,53 @@
+.app-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .app-theme-bar {
+      background-color: var(--bcn-blue);
+      padding: 0.5rem 2rem;
+      display: flex;
+      justify-content: flex-end;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    :host-context(:root.dark-mode) .app-theme-bar {
+      background-color: #0a0a14;
+      border-bottom-color: rgba(255, 255, 255, 0.06);
+    }
+
+    :host-context(:root.dark-mode) .app-footer {
+      background-color: #050508 !important;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .app-layout {
+      flex: 1;
+      min-height: calc(100vh - 48px);
+    }
+
+    .app-content {
+      padding: 24px;
+      background-color: var(--bcn-blue);
+      background-image: var(--bg-image);
+      background-position: var(--bg-position);
+      background-repeat: var(--bg-repeat);
+      background-size: var(--bg-size);
+    }
+
+    .inner-content {
+      background: transparent;
+      min-height: calc(100vh - 48px - 70px);
+    }
+
+    .app-footer {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      background-color: var(--bcn-dark-blue);
+    }
+
+    ::ng-deep .ant-spin-nested-loading > div > .ant-spin {
+      max-height: 100vh;
+    }

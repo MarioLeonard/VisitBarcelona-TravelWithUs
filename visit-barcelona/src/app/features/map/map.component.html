@@ -1,0 +1,57 @@
+<div class="map-page-container">
+      <app-back-button></app-back-button>
+      <div class="map-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <h1>Barcelona Map</h1>
+        </div>
+        <div class="filter-bar">
+          <nz-select [ngModel]="selectedCategory()" (ngModelChange)="selectedCategory.set($event)" nzPlaceHolder="Filter by Category" style="width: 200px;">
+            <nz-option nzValue="All" nzLabel="All Categories"></nz-option>
+            @for (cat of categories(); track cat) {
+              <nz-option [nzValue]="cat" [nzLabel]="cat"></nz-option>
+            }
+          </nz-select>
+        </div>
+      </div>
+
+      <div class="map-wrapper">
+        <google-map height="600px" width="100%" [center]="center" [zoom]="zoom" [options]="mapOptions">
+          @for (attraction of filteredAttractions(); track attraction.id) {
+            <map-marker
+              #marker="mapMarker"
+              [position]="{lat: attraction.lat, lng: attraction.lng}"
+              [options]="getMarkerOptions(attraction)"
+              (mapClick)="openInfoWindow(marker, attraction)">
+            </map-marker>
+          }
+          <map-info-window #infoWindow>
+            @if (selectedAttraction()) {
+              <div class="info-window-content">
+                @if (selectedAttraction()!.imageUrl) {
+                  <img [src]="selectedAttraction()!.imageUrl" [alt]="selectedAttraction()!.name" class="info-window-image" />
+                }
+                <h3>{{ selectedAttraction()!.name }}</h3>
+                <p><strong>{{ selectedAttraction()!.category }}</strong> · {{ selectedAttraction()!.district }}</p>
+                <p class="rating">{{ getStars(selectedAttraction()!.rating) }} ({{ selectedAttraction()!.rating }})</p>
+                <p>Status: <nz-tag [nzColor]="selectedAttraction()!.visited ? 'success' : 'error'">{{ selectedAttraction()!.visited ? 'Visited' : 'Not Visited' }}</nz-tag></p>
+                @if (!selectedAttraction()!.visited) {
+                  <button nz-button nzType="primary" nzSize="small" (click)="markVisited(selectedAttraction()!.id)">
+                    Mark as Visited
+                  </button>
+                }
+              </div>
+            }
+          </map-info-window>
+        </google-map>
+
+        <nz-card class="legend-card" nzSize="small">
+          <h4>Legend</h4>
+          <div class="legend-item">
+            <span class="legend-color" style="background-color: #52c41a;"></span> Visited
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background-color: #ff4d4f;"></span> Not Visited
+          </div>
+        </nz-card>
+      </div>
+    </div>

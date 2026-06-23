@@ -1,0 +1,14 @@
+<button 
+      nz-button 
+      nzType="text" 
+      nzSize="large"
+      (click)="themeService.toggleTheme()"
+      class="theme-toggle-btn"
+      [attr.aria-label]="themeService.isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+    >
+      @if (themeService.isDarkMode()) {
+        <span nz-icon nzType="sun" nzTheme="outline" class="icon"></span>
+      } @else {
+        <span nz-icon nzType="moon" nzTheme="outline" class="icon"></span>
+      }
+    </button>

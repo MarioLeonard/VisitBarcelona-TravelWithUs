@@ -1,0 +1,184 @@
+<div class="attractions-container">
+      <app-back-button></app-back-button>
+      <!-- Header -->
+      <div class="page-header">
+        <div class="header-left">
+          <h1>Barcelona Attractions</h1>
+          <p class="stats">
+            Total: {{ attractionsService.attractions().length }} | 
+            Visited: {{ attractionsService.visitedCount() }} | 
+            Remaining: {{ attractionsService.remainingCount() }}
+          </p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button nz-button nzType="default" nzSize="large" (click)="exportToExcel()">
+            <span nz-icon nzType="export"></span>
+            Export to Excel
+          </button>
+          <button nz-button nzType="primary" nzSize="large" (click)="openAddModal()">
+            <span nz-icon nzType="plus"></span>
+            Add Attraction
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Panel -->
+      <app-filter-panel (filterChange)="onFilterChange($event)"></app-filter-panel>
+
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <input
+          nz-input
+          nzSize="large"
+          nzPlaceHolder="Search by name, category, or district..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearchChange($event)"
+          nzPrefix="search"
+        />
+      </div>
+
+      <!-- Attractions Table -->
+      <nz-table
+        #table
+        [nzData]="filteredAttractions()"
+        nzBordered
+        [nzFrontPagination]="false"
+        [nzShowPagination]="true"
+        [nzPageSize]="10"
+        [nzShowSizeChanger]="true"
+        [nzShowQuickJumper]="true"
+      >
+        <thead>
+          <tr>
+            <th [nzWidth]="'18%'" [nzSortFn]="sortNameFn">Name</th>
+            <th [nzWidth]="'12%'" [nzSortFn]="sortCategoryFn">Category</th>
+            <th [nzWidth]="'12%'" [nzSortFn]="sortDistrictFn">District</th>
+            <th [nzWidth]="'12%'" [nzSortFn]="sortRatingFn">Rating</th>
+            <th [nzWidth]="'10%'" [nzSortFn]="sortStatusFn">Status</th>
+            <th [nzWidth]="'12%'" [nzSortFn]="sortDateFn">Added Date</th>
+            <th [nzWidth]="'14%'">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (attraction of table.data; track attraction.id) {
+            <tr>
+              <!-- Name -->
+              <td>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                  @if (attraction.imageUrl) {
+                    <img [src]="attraction.imageUrl" [alt]="attraction.name" style="width: 80px; height: 80px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />
+                  } @else {
+                    <div style="width: 80px; height: 80px; background: #f5f5f5; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                      <span nz-icon nzType="picture" style="color: #bfbfbf; font-size: 24px;"></span>
+                    </div>
+                  }
+                  <strong style="font-size: 1.05rem;">{{ attraction.name }}</strong>
+                </div>
+              </td>
+
+              <!-- Category -->
+              <td>
+                <nz-tag [nzColor]="'blue'">{{ attraction.category }}</nz-tag>
+              </td>
+
+              <!-- District -->
+              <td>
+                {{ attraction.district }}
+              </td>
+
+              <!-- Rating -->
+              <td>
+                <nz-rate
+                  [ngModel]="attraction.rating"
+                  [nzDisabled]="true"
+                  nzAllowHalf
+                ></nz-rate>
+                <span class="rating-value">{{ attraction.rating }}/5</span>
+              </td>
+
+              <!-- Visited Status -->
+              <td>
+                @if (attraction.visited) {
+                  <nz-badge nzStatus="success" nzText="Visited"></nz-badge>
+                } @else {
+                  <nz-badge nzStatus="default" nzText="Not visited"></nz-badge>
+                }
+              </td>
+
+              <!-- Added Date -->
+              <td>
+                <small>{{ attraction.addedDate | date: 'short' }}</small>
+              </td>
+
+              <!-- Actions -->
+              <td>
+                <nz-space nzSize="small">
+                  <button nz-button nzType="primary" nzSize="small" nz-tooltip nzTooltipTitle="Edit Attraction" aria-label="Edit Attraction" (click)="openEditModal(attraction)">
+                    <span nz-icon nzType="edit"></span>
+                  </button>
+                  <button
+                    nz-button
+                    nzType="primary"
+                    nzDanger
+                    nzSize="small"
+                    nz-tooltip 
+                    nzTooltipTitle="Delete Attraction"
+                    aria-label="Delete Attraction"
+                    nz-popconfirm
+                    [nzPopconfirmTitle]="'Delete Attraction?'"
+                    (nzOnConfirm)="onDeleteConfirm(attraction.id)"
+                    nzPopconfirmOkText="Yes"
+                    nzPopconfirmCancelText="No"
+                  >
+                    <span nz-icon nzType="delete"></span>
+                  </button>
+                </nz-space>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td [attr.colspan]="7" style="text-align: center; padding: 2rem;">
+                <nz-empty [nzNotFoundContent]="'No attractions found'"></nz-empty>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+
+      <!-- Add Modal -->
+      <nz-modal
+        [(nzVisible)]="isAddModalVisible"
+        nzTitle="Add New Attraction"
+        nzWidth="600px"
+        [nzFooter]="null"
+        (nzOnCancel)="closeAddModal()"
+      >
+        <ng-container *nzModalContent>
+          <app-attraction-form
+            [submitLabel]="'Add Attraction'"
+            (formSubmit)="onFormSubmit($event)"
+            (cancel)="closeAddModal()"
+          ></app-attraction-form>
+        </ng-container>
+      </nz-modal>
+
+      <!-- Edit Modal -->
+      <nz-modal
+        [(nzVisible)]="isEditModalVisible"
+        nzTitle="Edit Attraction"
+        nzWidth="600px"
+        [nzFooter]="null"
+        (nzOnCancel)="closeEditModal()"
+      >
+        <ng-container *nzModalContent>
+          @if (editingAttraction()) {
+            <app-attraction-form
+              [initialData]="editingAttraction()!"
+              [submitLabel]="'Update Attraction'"
+              (formSubmit)="onEditFormSubmit($event)"
+              (cancel)="closeEditModal()"
+            ></app-attraction-form>
+          }
+        </ng-container>
+      </nz-modal>
+    </div>

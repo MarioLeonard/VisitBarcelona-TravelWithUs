@@ -1,0 +1,69 @@
+<nz-card class="weather-card">
+      <div class="weather-content">
+        <!-- Loading State -->
+        @if (weatherService.loading()) {
+          <nz-skeleton [nzActive]="true" [nzParagraph]="{ rows: 2 }"></nz-skeleton>
+        }
+
+        <!-- Error State -->
+        @if (weatherService.hasError() && !weatherService.loading()) {
+          <div class="weather-error">
+            <span nz-icon nzType="warning" nzTheme="outline"></span>
+            <p>Unable to load weather</p>
+            <button nz-button nzType="link" nzSize="small" (click)="retry()">
+              Retry
+            </button>
+          </div>
+        }
+
+        <!-- Weather Display -->
+        @if (weatherService.weatherInfo() && !weatherService.loading()) {
+          <div class="weather-main">
+            <!-- Temperature and Condition -->
+            <div class="temp-section">
+              <div class="temperature">
+                {{ weatherService.weatherInfo()!.temp }}°C
+              </div>
+              <div class="condition">
+                {{ weatherService.weatherInfo()!.condition }}
+              </div>
+            </div>
+
+            <!-- Weather Icon -->
+            <div class="weather-icon-wrapper">
+              <span 
+                nz-icon 
+                [nzType]="getDisplayIcon(weatherService.weatherInfo()!.icon)" 
+                nzTheme="outline"
+                class="weather-icon"
+              ></span>
+              <p class="description">
+                {{ weatherService.weatherInfo()!.description }}
+              </p>
+            </div>
+          </div>
+
+          <div class="weather-details">
+            <div class="detail-item">
+              <div class="detail-text">
+                <span class="detail-label">Humidity</span>
+                <span class="detail-value">{{ weatherService.weatherInfo()!.humidity }}%</span>
+              </div>
+            </div>
+
+            <div class="detail-item">
+              <div class="detail-text">
+                <span class="detail-label">Wind</span>
+                <span class="detail-value">{{ weatherService.weatherInfo()!.windSpeed }} km/h</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="location">
+            <span nz-icon nzType="environment" nzTheme="fill"></span>
+            Barcelona
+          </div>
+        }
+      </div>
+    </nz-card>

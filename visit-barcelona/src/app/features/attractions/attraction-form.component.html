@@ -1,0 +1,174 @@
+<form [formGroup]="form" class="attraction-form">
+      <!-- Name Field -->
+      <div nz-row nzGutter="16">
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired>Name</nz-form-label>
+            <nz-form-control [nzErrorTip]="nameErrorTpl">
+              <input nz-input formControlName="name" placeholder="e.g., Sagrada Família" />
+              <ng-template #nameErrorTpl let-control>
+                @if (control.errors?.['required']) {
+                  Name is required
+                }
+                @if (control.errors?.['minlength']) {
+                  Name must be at least 3 characters
+                }
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Category Field -->
+      <div nz-row nzGutter="16">
+        <div nz-col nzXs="24" nzSm="12">
+          <nz-form-item>
+            <nz-form-label nzRequired>Category</nz-form-label>
+            <nz-form-control [nzErrorTip]="'Category is required'">
+              <nz-select
+                formControlName="category"
+                nzPlaceHolder="Select category"
+              >
+                @for (option of categoryOptions; track option) {
+                  <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- District Field -->
+        <div nz-col nzXs="24" nzSm="12">
+          <nz-form-item>
+            <nz-form-label nzRequired>District</nz-form-label>
+            <nz-form-control [nzErrorTip]="'District is required'">
+              <nz-select
+                formControlName="district"
+                nzPlaceHolder="Select district"
+              >
+                @for (option of districtOptions; track option) {
+                  <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Description Field -->
+      <div nz-row nzGutter="16">
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label>Description</nz-form-label>
+            <nz-form-control>
+              <textarea
+                nz-input
+                formControlName="description"
+                placeholder="Enter attraction description"
+                [nzAutosize]="{ minRows: 3, maxRows: 6 }"
+              ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Rating Field -->
+      <div nz-row nzGutter="16">
+        <div nz-col nzXs="24" nzSm="12">
+          <nz-form-item>
+            <nz-form-label nzRequired>Rating</nz-form-label>
+            <nz-form-control [nzErrorTip]="'Rating is required'">
+              <div class="rating-control">
+                <nz-rate
+                  formControlName="rating"
+                  [nzCount]="5"
+                  [nzTooltips]="['Terrible', 'Bad', 'Normal', 'Good', 'Excellent']"
+                ></nz-rate>
+                <span class="rating-value">{{ form.get('rating')?.value }} / 5</span>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Visited Toggle -->
+        <div nz-col nzXs="24" nzSm="12">
+          <nz-form-item>
+            <nz-form-label>Visited</nz-form-label>
+            <nz-form-control>
+              <nz-switch formControlName="visited"></nz-switch>
+              <span class="visited-label">{{ form.get('visited')?.value ? 'Visited' : 'Not visited' }}</span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Latitude / Longitude -->
+      <div nz-row nzGutter="16">
+        <div nz-col nzXs="24" nzSm="12">
+          <nz-form-item>
+            <nz-form-label nzRequired>Latitude</nz-form-label>
+            <nz-form-control [nzErrorTip]="'Latitude is required (range: -90 to 90)'">
+              <input
+                nz-input
+                type="number"
+                formControlName="lat"
+                placeholder="e.g., 41.4036"
+                step="0.0001"
+                min="-90"
+                max="90"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzXs="24" nzSm="12">
+          <nz-form-item>
+            <nz-form-label nzRequired>Longitude</nz-form-label>
+            <nz-form-control [nzErrorTip]="'Longitude is required (range: -180 to 180)'">
+              <input
+                nz-input
+                type="number"
+                formControlName="lng"
+                placeholder="e.g., 2.1744"
+                step="0.0001"
+                min="-180"
+                max="180"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Image Upload -->
+      <div nz-row nzGutter="16">
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label>Photo (Optional)</nz-form-label>
+            <nz-form-control>
+              <input
+                type="file"
+                accept="image/*"
+                (change)="onFileSelected($event)"
+                class="file-upload-input"
+              />
+              @if (form.get('imageUrl')?.value) {
+                <div class="image-preview">
+                  <img [src]="form.get('imageUrl')?.value" alt="Preview" />
+                  <button nz-button nzType="text" nzDanger nzSize="small" (click)="removeImage($event)">Remove</button>
+                </div>
+              }
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button nz-button nzType="primary" (click)="onSubmit()" [disabled]="form.invalid">
+          {{ submitLabel() }}
+        </button>
+        <button nz-button (click)="onCancel()">
+          Cancel
+        </button>
+      </div>
+    </form>

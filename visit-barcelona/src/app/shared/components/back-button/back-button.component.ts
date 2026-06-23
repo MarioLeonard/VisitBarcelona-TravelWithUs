@@ -9,17 +9,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, NzButtonModule, NzIconModule],
-  template: `
-    <button nz-button nzType="default" (click)="goBack()" class="back-button">
-      <span nz-icon nzType="arrow-left"></span>
-      Back to Dashboard
-    </button>
-  `,
-  styles: [`
-    .back-button {
-      margin-bottom: 1rem;
-    }
-  `]
+  templateUrl: './back-button.component.html',
+  styleUrl: './back-button.component.scss'
 })
 export class BackButtonComponent {
   private router = inject(Router);

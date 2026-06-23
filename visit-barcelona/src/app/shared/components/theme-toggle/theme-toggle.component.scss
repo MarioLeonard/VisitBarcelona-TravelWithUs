@@ -1,0 +1,25 @@
+.theme-toggle-btn {
+      color: #ffffff !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 1rem !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      width: 40px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      color: #ffffff !important;
+    }
+
+    .icon {
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }

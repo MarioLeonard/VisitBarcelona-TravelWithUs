@@ -1,0 +1,133 @@
+<div class="register-container">
+      <nz-card class="register-card">
+        <h1>Create Account</h1>
+        <p>Join Visit Barcelona today</p>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24" nzRequired>First Name</nz-form-label>
+            <nz-form-control [nzSpan]="24" [nzErrorTip]="firstNameErrorTemplate">
+              <input
+                nz-input
+                type="text"
+                formControlName="firstName"
+                placeholder="Enter your first name"
+              />
+            </nz-form-control>
+            <ng-template #firstNameErrorTemplate let-control>
+              @if (control.hasError('required')) {
+                <span>First name is required</span>
+              }
+            </ng-template>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24" nzRequired>Last Name</nz-form-label>
+            <nz-form-control [nzSpan]="24" [nzErrorTip]="lastNameErrorTemplate">
+              <input
+                nz-input
+                type="text"
+                formControlName="lastName"
+                placeholder="Enter your last name"
+              />
+            </nz-form-control>
+            <ng-template #lastNameErrorTemplate let-control>
+              @if (control.hasError('required')) {
+                <span>Last name is required</span>
+              }
+            </ng-template>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24" nzRequired>Email</nz-form-label>
+            <nz-form-control [nzSpan]="24" [nzErrorTip]="emailErrorTemplate">
+              <input
+                nz-input
+                type="email"
+                formControlName="email"
+                placeholder="Enter your email"
+              />
+            </nz-form-control>
+            <ng-template #emailErrorTemplate let-control>
+              @if (control.hasError('required')) {
+                <span>Email is required</span>
+              } @else if (control.hasError('email')) {
+                <span>Please enter a valid email</span>
+              }
+            </ng-template>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24" nzRequired>Password</nz-form-label>
+            <nz-form-control [nzSpan]="24" [nzErrorTip]="passwordErrorTemplate">
+              <input
+                nz-input
+                type="password"
+                formControlName="password"
+                placeholder="Enter your password"
+              />
+            </nz-form-control>
+            <ng-template #passwordErrorTemplate let-control>
+              @if (control.hasError('required')) {
+                <span>Password is required</span>
+              } @else if (control.hasError('passwordStrength')) {
+                <span>Password must contain at least 6 characters, one uppercase letter, one lowercase letter, one digit, and one special character (!@#$%^&*)</span>
+              }
+            </ng-template>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24" nzRequired>Confirm Password</nz-form-label>
+            <nz-form-control [nzSpan]="24" [nzErrorTip]="confirmPasswordErrorTemplate">
+              <input
+                nz-input
+                type="password"
+                formControlName="confirmPassword"
+                placeholder="Confirm your password"
+              />
+            </nz-form-control>
+            <ng-template #confirmPasswordErrorTemplate let-control>
+              @if (control.hasError('required')) {
+                <span>Please confirm your password</span>
+              } @else if (control.hasError('passwordMismatch')) {
+                <span>Passwords do not match</span>
+              }
+            </ng-template>
+          </nz-form-item>
+
+          @if (errorMessage()) {
+            <nz-alert
+              nzType="error"
+              [nzMessage]="errorMessage()"
+              nzShowIcon
+              [nzCloseable]="true"
+              (nzOnClose)="clearError()"
+            ></nz-alert>
+          }
+
+          @if (successMessage()) {
+            <nz-alert
+              nzType="success"
+              [nzMessage]="successMessage()"
+              nzShowIcon
+            ></nz-alert>
+          }
+
+          <button
+            nz-button
+            nzType="primary"
+            nzSize="large"
+            [disabled]="registerForm.invalid || isLoading()"
+            class="register-button"
+          >
+            <nz-spin *ngIf="isLoading()" nzSimple [nzSize]="'small'"></nz-spin>
+            {{ isLoading() ? 'Creating Account...' : 'Register' }}
+          </button>
+        </form>
+
+        <p class="login-link">
+          Already have an account?
+          <a routerLink="/auth/login">Login here</a>
+        </p>
+      </nz-card>
+    </div>

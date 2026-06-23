@@ -1,0 +1,78 @@
+:host {
+      display: block;
+      background-color: var(--bcn-blue);
+      background-image: var(--bg-image);
+      background-position: var(--bg-position);
+      background-repeat: var(--bg-repeat);
+      background-size: var(--bg-size);
+      min-height: 100vh;
+    }
+
+    .attractions-container {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .header-left h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #ffffff;
+    }
+
+    .stats {
+      margin: 0.5rem 0 0 0;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .search-bar {
+      margin-bottom: 1.5rem;
+    }
+
+    ::ng-deep .ant-table {
+      font-size: 0.9rem;
+    }
+
+    ::ng-deep .ant-table-thead > tr > th {
+      background: #fafafa;
+      font-weight: 600;
+    }
+
+    .rating-value {
+      margin-left: 0.5rem;
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    ::ng-deep nz-space-item {
+      display: flex;
+    }
+
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .attractions-container {
+        padding: 1rem;
+      }
+
+      ::ng-deep .ant-table {
+        font-size: 0.8rem;
+      }
+
+      ::ng-deep .ant-btn {
+        font-size: 0.8rem !important;
+      }
+    }
