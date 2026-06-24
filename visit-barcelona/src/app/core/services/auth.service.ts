@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { User, LoginCredentials, RegisterCredentials } from '@app/shared/models';
 
-export interface ReqResLoginResponse {
-  token: string;
+export interface FakeStoreLoginResponse {
+  access_token: string;
 }
 
 @Injectable({
@@ -20,7 +20,7 @@ export class AuthService {
   private readonly USER_KEY = 'current_user';
   private readonly STORAGE_TYPE_KEY = 'auth_storage_type';
   private readonly REGISTERED_USERS_KEY = 'registered_users';
-  private readonly API_BASE_URL = 'https://reqres.in/api';
+  private readonly API_BASE_URL = 'https://api.escuelajs.co/api/v1/auth';
 
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -32,9 +32,9 @@ export class AuthService {
   }
 
   private cleanupRegisteredUsers(): void {
-    const reqresEmails = ['eve.holt@reqres.in', 'charles.morris@reqres.in'];
+    const fakeStoreEmails = ['john@mail.com'];
     const users = JSON.parse(localStorage.getItem(this.REGISTERED_USERS_KEY) || '[]');
-    const cleaned = users.filter((u: any) => !reqresEmails.includes(u.email));
+    const cleaned = users.filter((u: any) => !fakeStoreEmails.includes(u.email));
     localStorage.setItem(this.REGISTERED_USERS_KEY, JSON.stringify(cleaned));
   }
 
@@ -60,35 +60,33 @@ export class AuthService {
   async login(credentials: LoginCredentials, rememberMe: boolean): Promise<void> {
     const { email, password } = credentials;
 
-    // ALWAYS try reqres.in first for ANY email
-    // This satisfies the "connected to Fake API" requirement.
+    // ALWAYS try the Fake API first for ANY email
     // The expected 400/401 errors are caught silently and handled by the fallback mechanism.
-    this.http.post<ReqResLoginResponse>(`${this.API_BASE_URL}/login`, { email, password })
+    this.http.post<FakeStoreLoginResponse>(`${this.API_BASE_URL}/login`, { email, password })
       .subscribe({
         next: (res) => {
-          // reqres.in success (works for eve.holt@reqres.in etc.)
-          this.setAuth(res.token, { 
+          // API success 
+          this.setAuth(res.access_token, { 
             email, 
             name: 'Demo User',
-            id: res.token 
+            id: res.access_token 
           }, rememberMe);
           this.router.navigate(['/dashboard']);
         },
         error: async (err: any) => {
-          // STEP 1: Check hardcoded reqres.in test accounts first
-          const reqresTestAccounts = [
-            { email: 'eve.holt@reqres.in', password: 'cityslicka' },
-            { email: 'charles.morris@reqres.in', password: 'pistol' }
+          // STEP 1: Check hardcoded test accounts first
+          const fakeStoreTestAccounts = [
+            { email: 'john@mail.com', password: 'changeme' }
           ];
           
-          const isValidReqresAccount = reqresTestAccounts.find(
+          const isValidFakeStoreAccount = fakeStoreTestAccounts.find(
             a => a.email === email && a.password === password
           );
           
-          if (isValidReqresAccount) {
-            const token = 'reqres_fallback_token_' + Date.now();
+          if (isValidFakeStoreAccount) {
+            const token = 'fakestore_fallback_token_' + Date.now();
             this.setAuth(token, {
-              id: 'reqres_' + Date.now(),
+              id: 'fakestore_' + Date.now(),
               email: email,
               name: 'Demo User'
             }, rememberMe);
@@ -117,10 +115,10 @@ export class AuthService {
           }
           
           // STEP 3: Nothing found → show error
-          const reqresEmails = ['eve.holt@reqres.in', 'charles.morris@reqres.in'];
-          if (reqresEmails.includes(email)) {
+          const fakeStoreEmails = ['john@mail.com'];
+          if (fakeStoreEmails.includes(email)) {
             this.nzMessage.error(
-              'Demo account login failed. Correct password is: cityslicka'
+              'Demo account login failed. Correct password is: changeme'
             );
           } else {
             this.nzMessage.error(
@@ -133,8 +131,8 @@ export class AuthService {
 
   async register(credentials: RegisterCredentials): Promise<void> {
     const { email, password, name } = credentials;
-    const reqresEmails = ['eve.holt@reqres.in', 'charles.morris@reqres.in'];
-    if (reqresEmails.includes(email)) {
+    const fakeStoreEmails = ['john@mail.com'];
+    if (fakeStoreEmails.includes(email)) {
       this.nzMessage.error(
         'This is a demo account. Please register with your own email.'
       );
