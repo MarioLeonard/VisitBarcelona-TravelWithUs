@@ -62,6 +62,17 @@ export class AttractionsComponent implements OnInit {
   private selectedCategories = signal<string[]>([]);
   private ratingRange = signal<[number, number]>([0, 5]);
 
+  // Dynamic filter options
+  uniqueDistricts = computed(() => {
+    const all = this.attractionsService.getAll();
+    return [...new Set(all.map(a => a.district))].sort();
+  });
+
+  uniqueCategories = computed(() => {
+    const all = this.attractionsService.getAll();
+    return [...new Set(all.map(a => a.category))].sort();
+  });
+
   // Computed filtered attractions combining search + filters
   filteredAttractions = computed(() => {
     const query = this.searchQuery.toLowerCase().trim();

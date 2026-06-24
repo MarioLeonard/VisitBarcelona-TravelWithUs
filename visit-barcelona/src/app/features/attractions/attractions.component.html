@@ -23,7 +23,11 @@
       </div>
 
       <!-- Filter Panel -->
-      <app-filter-panel (filterChange)="onFilterChange($event)"></app-filter-panel>
+      <app-filter-panel 
+        [availableDistricts]="uniqueDistricts()"
+        [availableCategories]="uniqueCategories()"
+        (filterChange)="onFilterChange($event)">
+      </app-filter-panel>
 
       <!-- Search Bar -->
       <div class="search-bar">
