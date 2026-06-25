@@ -153,7 +153,7 @@ export class DashboardComponent implements AfterViewInit {
   getMarkerOptions(attraction: Attraction): google.maps.MarkerOptions {
     return {
       icon: {
-        path: google.maps.SymbolPath.CIRCLE,
+        path: 0, // 0 corresponds to google.maps.SymbolPath.CIRCLE
         scale: 8,
         fillColor: attraction.visited ? '#52c41a' : '#ff4d4f',
         fillOpacity: 1,
